@@ -11,7 +11,7 @@ kotlin {
 }
 
 group = "com.fawcar.artifacts"
-val PREDEFINED_VERSION = "0.1.3"
+val PREDEFINED_VERSION = "0.1.4"
 
 // 在发布的时候，会写入publishVersion这个Property中版本号，实际上加不加-SNAPSHOT 不影响CI发布，会自动根据CI类型确定版本号
 version = findProperty("build.publish.version") ?: PREDEFINED_VERSION
