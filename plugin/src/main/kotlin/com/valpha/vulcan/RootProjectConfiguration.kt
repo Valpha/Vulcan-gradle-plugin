@@ -2,13 +2,14 @@ package com.valpha.vulcan
 
 import org.gradle.kotlin.dsl.create
 import com.valpha.vulcan.model.VulcanConfigExtension
+import com.valpha.vulcan.model.findProjectByName
 import com.valpha.vulcan.utility.log
-import com.valpha.vulcan.utility.taggedError
+import com.valpha.vulcan.utility.logState
 import org.gradle.api.Project
 
 internal fun Project.configureRootProjectVulcan() {
     "RootProject".log("setup")
-    val config = extensions.create<VulcanConfigExtension>("vulcan", this)
+    val config = extensions.create<VulcanConfigExtension>("vulcan")
 
     afterEvaluate {
         val tag = "vulcanConfig"
@@ -17,8 +18,10 @@ internal fun Project.configureRootProjectVulcan() {
 
         "vulcan.config.modules: ${config.modules.map { it.name }}".log(tag)
         // resolve flavor module mapping
-        resolveFlavorModuleMapping(config)
+        resolveFlavorVariantsModuleMapping(config)
 
+        // check variants config correctness
+        checkVariantsConfig(config)
 
         /**
          * 所有的子模块
@@ -118,9 +121,10 @@ internal fun Project.configureRootProjectVulcan() {
 
 }
 
-fun Project.resolveFlavorModuleMapping(config: VulcanConfigExtension): Boolean {
+fun Project.resolveFlavorVariantsModuleMapping(config: VulcanConfigExtension): Boolean {
     val tag = "resolveMapping"
 
+    tag.logState()
 
     config.flavorDimensions.forEach { dimension ->
         val dimensionTag = tag + ":" + dimension.name
@@ -143,10 +147,29 @@ fun Project.resolveFlavorModuleMapping(config: VulcanConfigExtension): Boolean {
 
     }
 
+    config.variants.forEach { variant ->
+        val variantTag = tag + ":" + variant.name
+        variant.targetModule.orNull ?: run {
+            variant.targetModule.set(config.findProjectByName(variant.name))
+        }
+        "Variant-Module matched, [${variant.name}]<->[${variant.targetModule.get().displayName}]".log(variantTag)
+    }
     return true
 }
 
+private fun Project.checkVariantsConfig(config: VulcanConfigExtension) {
+    val tag = "variantsCheck"
+    tag.logState()
 
-fun VulcanConfigExtension.findProjectByName(name: String): Project {
-    return modules.find { it.name == name } ?: error(taggedError("moduleName(\"$name\") does not exist."))
+    val variants = config.variants
+    variants.forEach {
+        val variantTag = tag + ":" + it.name
+        "Checking variant: ${it.name}".log(variantTag)
+        it.flavorMenu.get().forEach { (dimen, flavor) ->
+            "menu for dimension: [$dimen] -> [$flavor]".log(variantTag)
+        }
+    }
 }
+
+
+

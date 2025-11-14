@@ -29,22 +29,23 @@ vulcan {
                     targetModule.set(project("func2-impl2"))
                 }
             }
-
         }
     }
 
     variants {
-        create("variant1") {
+        create("cc1") {
             targetModule.set(project("app"))
-
-//            dimensionValue("func1", "value1")
-//            dimensionValue("func2", "valueA")
+            flavorMenu {
+                select("ccb", "impl1")
+                select("tts", "impl1")
+            }
         }
-        create("variant2") {
-//            dimensionValue("func1", "value2")
-//            dimensionValue("func2", "valueB")
+        create("E624") {
+            targetModule.set(project("app"))
+            flavorMenu {
+                select("ccb", "impl2")
+                select("tts", "impl2")
+            }
         }
     }
-
-
 }

@@ -12,6 +12,7 @@ plugins {
     // Apply the Java Gradle plugin development plugin to add support for developing Gradle plugins
     `java-gradle-plugin`
     `kotlin-dsl`
+    `embedded-kotlin`
     id("com.gradle.plugin-publish") version "2.0.0"
 
     // Apply the Kotlin JVM plugin to add support for Kotlin.

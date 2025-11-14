@@ -1,16 +1,24 @@
 package com.valpha.vulcan.model
 
+import com.valpha.vulcan.utility.taggedError
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
+import org.gradle.api.model.ObjectFactory
 import org.gradle.kotlin.dsl.container
+import org.gradle.kotlin.dsl.domainObjectContainer
+import org.gradle.kotlin.dsl.newInstance
+import javax.inject.Inject
 
-open class VulcanConfigExtension(project: Project) {
+open class VulcanConfigExtension @Inject constructor(objectFactory: ObjectFactory) {
     internal val modules: MutableSet<Project> = mutableSetOf()
-    val flavorDimensions: NamedDomainObjectContainer<FlavorDimensionConfig> = project.container()
-    val variants: NamedDomainObjectContainer<VariantConfig> = project.container()
+    val flavorDimensions = objectFactory.domainObjectContainer(FlavorDimensionConfig::class)
+    val variants = objectFactory.domainObjectContainer(VariantConfig::class) {
+        objectFactory.newInstance<VariantConfig>(it)
+            .apply { extension = this@VulcanConfigExtension }
+    }
 
-//    val exclude: SetProperty<String> = project.objects.setProperty()
-//    val app: SetProperty<String> = project.objects.setProperty()
-//
-//    val allFlavors get() = flavorDimension.flatMap { it.allFlavors }
+}
+
+fun VulcanConfigExtension.findProjectByName(name: String): Project {
+    return modules.find { it.name == name } ?: error(taggedError("moduleName(\"$name\") does not exist."))
 }

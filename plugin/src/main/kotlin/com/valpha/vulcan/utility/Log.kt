@@ -9,7 +9,7 @@ internal fun Boolean.require(message: String, tag: String? = null) {
     require(this) { "[$KIT_NAME](REQUIRE):  ${tag?.let { "($it) " } ?: ""}$message" }
 }
 
-internal inline fun taggedLog(tag: String?, crossinline lazyMessage: () -> String): () -> String {
+internal inline fun taggedLog(tag: String? = null, crossinline lazyMessage: () -> String): () -> String {
     return { "[$KIT_NAME]: ${tag?.let { "($it) " } ?: ""}${lazyMessage()}" }
 }
 
@@ -20,8 +20,15 @@ internal fun taggedRequire(lazyMessage: String): () -> String =
     taggedLog("Require") { lazyMessage }
 
 
-internal fun <T> T.log(tag: String?) =
+internal fun <T> T.log(tag: String?=null) =
     println(taggedLog(tag, ::toString)())
+
+internal fun String.logState() {
+    "=".repeat(50).log()
+    "| $this  ".log()
+    "=".repeat(50).log()
+
+}
 
 
 fun main() {
