@@ -4,7 +4,8 @@ import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.container
 
-open class VulcanConfig(project: Project) {
+open class VulcanConfigExtension(project: Project) {
+    internal val modules: MutableSet<Project> = mutableSetOf()
     val flavorDimensions: NamedDomainObjectContainer<FlavorDimensionConfig> = project.container()
     val variants: NamedDomainObjectContainer<VariantConfig> = project.container()
 

@@ -7,6 +7,6 @@ android{
     compileSdk = 34
 }
 dependencies {
-    implementation(":func1")
-    implementation(":func2")
+    implementation(project(":func1"))
+    implementation(project(":func2"))
 }

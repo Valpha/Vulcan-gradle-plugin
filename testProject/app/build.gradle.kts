@@ -8,5 +8,5 @@ android{
     compileSdk = 34
 }
 dependencies {
-    implementation(":core")
+    implementation(project(":core"))
 }

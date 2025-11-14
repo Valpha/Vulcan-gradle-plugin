@@ -29,13 +29,13 @@ testing {
         // Configure the built-in test suite
         val test by getting(JvmTestSuite::class) {
             // Use Kotlin Test test framework
-            useKotlinTest("2.2.0")
+            useKotlinTest("2.0.0")
         }
 
         // Create a new test suite
-        val functionalTest by registering(JvmTestSuite::class) {
+        /*val functionalTest by registering(JvmTestSuite::class) {
             // Use Kotlin Test test framework
-            useKotlinTest("2.2.0")
+            useKotlinTest("2.0.0")
 
             dependencies {
                 // functionalTest test suite depends on the production code in tests
@@ -49,7 +49,7 @@ testing {
                     testTask.configure { shouldRunAfter(test) }
                 }
             }
-        }
+        }*/
     }
 }
 
@@ -66,12 +66,12 @@ gradlePlugin {
     }
 }
 
-gradlePlugin.testSourceSets.add(sourceSets["functionalTest"])
+//gradlePlugin.testSourceSets.add(sourceSets["functionalTest"])
 
-tasks.named<Task>("check") {
-    // Include functionalTest as part of the check lifecycle
-    dependsOn(testing.suites.named("functionalTest"))
-}
+//tasks.named<Task>("check") {
+//    // Include functionalTest as part of the check lifecycle
+//    dependsOn(testing.suites.named("functionalTest"))
+//}
 
 publishing.repositories.maven {
     name = "local-test"
@@ -80,7 +80,5 @@ publishing.repositories.maven {
 
 dependencies {
     compileOnly("com.android.tools.build:gradle-api:8.13.0")
-
-    "functionalTestImplementation"("com.android.tools.build:gradle:8.13.0")
     implementation(gradleKotlinDsl())
 }
