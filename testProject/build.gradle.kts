@@ -4,36 +4,29 @@ plugins {
     id("com.valpha.vulcan") version "0.1.0"
 }
 
-//dependencies {
-//    implementation(gradleKotlinDsl())
-//
-//    classpath("com.android.tools.build:gradle-api:8.13.0")
-//
-//}
 
 vulcan {
 
     flavorDimensions {
-        create("func1") {
-
+        create("ccb") {
+            targetModule.set(project("core"))
             flavors {
-                create("func1-impl1") {
-                    modulePath.set(":func1-impl2")
+                create("impl1") {
+                    targetModule.set(project("func1-impl1"))
                 }
-                create("func1-impl2") {
+                create("impl2") {
                     targetModule.set(project(":func1-impl2"))
-
                 }
             }
         }
-        create("func2") {
+        create("tts") {
+            targetModule.set(project("core"))
             flavors {
-                create("func2-impl1") {
-                    targetModule.set(project(":app"))
-
+                create("impl1") {
+                    targetModule.set(project("func2-impl1"))
                 }
-                create("func2-impl2") {
-
+                create("impl2") {
+                    targetModule.set(project("func2-impl2"))
                 }
             }
 

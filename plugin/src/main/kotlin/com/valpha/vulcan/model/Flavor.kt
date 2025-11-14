@@ -12,7 +12,7 @@ import javax.annotation.Nonnull
 import javax.annotation.Nullable
 import kotlin.text.get
 
-abstract class Flavor : Named, NamedModuleMapping() {
+abstract class Flavor : Named  ,NamedModuleMapping(){
 
     @get:Input
     @get:Optional
@@ -22,6 +22,6 @@ abstract class Flavor : Named, NamedModuleMapping() {
     @get:Optional
     abstract var extension: (ProductFlavor.() -> Unit)?
     override fun toString(): String {
-        return "(\"${modulePath.get()}\"${if (ext != null) ", ext" else ""}${if (extension != null) ", extension" else ""})"
+        return "(\"${name}\"${if (ext != null) ", ext" else ""}${if (extension != null) ", extension" else ""})"
     }
 }

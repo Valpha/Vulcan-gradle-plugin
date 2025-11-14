@@ -126,23 +126,18 @@ fun Project.resolveFlavorModuleMapping(config: VulcanConfigExtension): Boolean {
         val dimensionTag = tag + ":" + dimension.name
         "check flavor dimension: ${dimension.name}".log(dimensionTag)
 
-        dimension.resolvedProject = dimension.modulePath.orNull?.let {
-            config.findProjectByPath(it)
-        } ?: config.findProjectByName(dimension.name)
-        "FlavorDimension-Module matched, [${dimension.name}<->${dimension.resolvedProject.displayName}]".log(
+        dimension.targetModule.orNull ?: run {
+            dimension.targetModule.set(config.findProjectByName(dimension.name))
+        }
+        "FlavorDimension-Module matched, [${dimension.name}]<->[${dimension.targetModule.get().displayName}]".log(
             dimensionTag
         )
-        "xxxxxxx project: ${dimension.targetModule.orNull}".log(dimensionTag)
-
 
         dimension.flavors.forEach { flavor ->
-            flavor.resolvedProject = flavor.modulePath.orNull?.let {
-                config.findProjectByPath(it)
-            } ?: config.findProjectByName(flavor.name)
-            "Flavor-Module matched, [${flavor.name}<->${flavor.resolvedProject.displayName}]".log(dimensionTag)
-
-            "xxxxxxx project: ${flavor.targetModule.orNull?.parent}".log(dimensionTag)
-
+            flavor.targetModule.orNull ?: run {
+                flavor.targetModule.set(config.findProjectByName(flavor.name))
+            }
+            "Flavor-Module matched, [${flavor.name}]<->[${flavor.targetModule.get().displayName}]".log(dimensionTag)
         }
 
 
@@ -154,8 +149,4 @@ fun Project.resolveFlavorModuleMapping(config: VulcanConfigExtension): Boolean {
 
 fun VulcanConfigExtension.findProjectByName(name: String): Project {
     return modules.find { it.name == name } ?: error(taggedError("moduleName(\"$name\") does not exist."))
-}
-
-fun VulcanConfigExtension.findProjectByPath(path: String): Project {
-    return modules.find { it.path == path } ?: error(taggedError("modulePath(\"$path\") does not exist."))
 }

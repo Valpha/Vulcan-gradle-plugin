@@ -8,12 +8,5 @@ import org.gradle.api.tasks.Optional
 
 abstract class NamedModuleMapping {
     @get:Input
-    @get:Optional
-    abstract val modulePath: Property<String?>
-
-    @get:Internal
-    internal lateinit var resolvedProject: Project
-
-    @get:Input
     abstract val targetModule: Property<Project>
 }
