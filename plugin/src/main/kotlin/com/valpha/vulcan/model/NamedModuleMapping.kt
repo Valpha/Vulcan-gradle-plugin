@@ -6,7 +6,7 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
 
-abstract class NamedModuleMapping {
+interface NamedModuleMapping {
     @get:Input
-    abstract val targetModule: Property<Project>
+     val targetModule: Property<Project>
 }

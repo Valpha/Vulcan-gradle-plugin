@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 abstract class VariantConfig @Inject constructor(
     private val objectFactory: ObjectFactory
-) : Named, NamedModuleMapping() {
+) : Named, NamedModuleMapping {
     // 用 MapProperty 存 flavorDimension -> flavor 的映射
     @get:Input
     abstract val flavorMenu: MapProperty<String, String>

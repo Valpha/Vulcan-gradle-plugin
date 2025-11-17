@@ -12,7 +12,7 @@ import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.Optional
 
-abstract class FlavorDimensionConfig : Named, NamedModuleMapping() {
+abstract class FlavorDimensionConfig : Named, NamedModuleMapping {
 
     @get:Nested
     abstract val flavors: NamedDomainObjectContainer<Flavor>

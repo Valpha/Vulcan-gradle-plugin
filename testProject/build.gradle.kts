@@ -8,43 +8,49 @@ plugins {
 vulcan {
 
     flavorDimensions {
-        create("ccb") {
+        create("func1") {
             targetModule.set(project("core"))
             flavors {
-                create("impl1") {
+                create("func1_1") {
                     targetModule.set(project("func1-impl1"))
                 }
-                create("impl2") {
+                create("func1_2") {
                     targetModule.set(project(":func1-impl2"))
+                    flavorConfig {
+                        isDefault = true
+                    }
                 }
             }
         }
-        create("tts") {
+        create("func2") {
             targetModule.set(project("core"))
             flavors {
-                create("impl1") {
+                create("func2_1") {
                     targetModule.set(project("func2-impl1"))
                 }
-                create("impl2") {
+                create("func2_2") {
                     targetModule.set(project("func2-impl2"))
+                }
+                create("func2_3") {
+                    targetModule.set(project("func2-impl3"))
                 }
             }
         }
     }
 
     variants {
-        create("cc1") {
+        create("v12") {
             targetModule.set(project("app"))
             flavorMenu {
-                select("ccb", "impl1")
-                select("tts", "impl1")
+                select("func1", "func1_1")
+                select("func2", "func2_2")
             }
         }
-        create("E624") {
+        create("v23") {
             targetModule.set(project("app"))
             flavorMenu {
-                select("ccb", "impl2")
-                select("tts", "impl2")
+                select("func1", "func1_2")
+                select("func2", "func2_3")
             }
         }
     }

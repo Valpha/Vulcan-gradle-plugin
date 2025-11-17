@@ -6,7 +6,9 @@ android{
     namespace = "com.valpha.testproject.app"
 
     compileSdk = 34
+
 }
 dependencies {
-    implementation(project(":core"))
+    implementation(project(":feature1"))
+    implementation(project(":feature2"))
 }

@@ -5,9 +5,6 @@ internal const val KIT_NAME = "Vulcan-Plugin"
 internal fun <T> T.warn(tag: String? = null) =
     println("[$KIT_NAME](WARNING):  ${tag?.let { "($it) " } ?: ""}$this")
 
-internal fun Boolean.require(message: String, tag: String? = null) {
-    require(this) { "[$KIT_NAME](REQUIRE):  ${tag?.let { "($it) " } ?: ""}$message" }
-}
 
 internal inline fun taggedLog(tag: String? = null, crossinline lazyMessage: () -> String): () -> String {
     return { "[$KIT_NAME]: ${tag?.let { "($it) " } ?: ""}${lazyMessage()}" }
@@ -16,11 +13,14 @@ internal inline fun taggedLog(tag: String? = null, crossinline lazyMessage: () -
 internal fun taggedError(message: String): String =
     taggedLog("Error") { message }()
 
-internal fun taggedRequire(lazyMessage: String): () -> String =
-    taggedLog("Require") { lazyMessage }
+internal fun taggedRequire(lazyMessage: () -> String): () -> String =
+    taggedLog("Require", lazyMessage)
 
+internal fun Boolean.require(lazyMessage: () -> String) {
+    require(this, taggedRequire(lazyMessage))
+}
 
-internal fun <T> T.log(tag: String?=null) =
+internal fun <T> T.log(tag: String? = null) =
     println(taggedLog(tag, ::toString)())
 
 internal fun String.logState() {
