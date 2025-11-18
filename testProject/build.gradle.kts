@@ -30,6 +30,9 @@ vulcan {
                 }
                 create("func2_2") {
                     targetModule.set(project("func2-impl2"))
+                    flavorConfig {
+                        isDefault = true
+                    }
                 }
                 create("func2_3") {
                     targetModule.set(project("func2-impl3"))
@@ -45,12 +48,21 @@ vulcan {
                 select("func1", "func1_1")
                 select("func2", "func2_2")
             }
+            flavorConfig {
+                this.applicationId = "com.valpha.vulcan.v12"
+                versionCode = 40
+            }
         }
         create("v23") {
             targetModule.set(project("app"))
             flavorMenu {
                 select("func1", "func1_2")
                 select("func2", "func2_3")
+            }
+            flavorConfig {
+                this.applicationId = "com.valpha.vulcan.v23"
+                this.applicationIdSuffix = "awefaw3rfaw3faw"
+                versionCode = 188
             }
         }
     }

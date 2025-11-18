@@ -1,6 +1,9 @@
 package com.valpha.vulcan.model
 
+import com.android.build.api.dsl.ApplicationProductFlavor
+import com.android.build.api.dsl.LibraryProductFlavor
 import com.valpha.vulcan.utility.taggedError
+import org.gradle.api.Action
 import org.gradle.api.GradleException
 import org.gradle.api.Named
 import org.gradle.api.NamedDomainObjectContainer
@@ -8,11 +11,15 @@ import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Optional
 import javax.inject.Inject
 
 abstract class VariantConfig @Inject constructor(
     private val objectFactory: ObjectFactory
 ) : Named, NamedModuleMapping {
+    // 注入 extension
+    internal lateinit var extension: VulcanConfigExtension
+
     // 用 MapProperty 存 flavorDimension -> flavor 的映射
     @get:Input
     abstract val flavorMenu: MapProperty<String, String>
@@ -24,8 +31,13 @@ abstract class VariantConfig @Inject constructor(
         scope.action()
     }
 
-    // 注入 extension
-    internal lateinit var extension: VulcanConfigExtension
+    @get:Input
+    @get:Optional
+    abstract val flavorConfig: Property<Action<ApplicationProductFlavor>?>
+
+    fun flavorConfig(action: Action<ApplicationProductFlavor>) {
+        flavorConfig.set(action)
+    }
 }
 
 

@@ -19,11 +19,6 @@ import kotlin.text.get
 abstract class Flavor @Inject constructor(
     objectFactory: ObjectFactory
 ) : NamedModuleMapping, Named {
-
-    @get:Input
-    @get:Optional
-    abstract var ext: ((CommonExtension<*, *, *, *, *, *>).() -> Unit)?
-
     @get:Input
     @get:Optional
     abstract val flavorConfig: Property<Action<LibraryProductFlavor>?>
@@ -34,6 +29,6 @@ abstract class Flavor @Inject constructor(
 
 
     override fun toString(): String {
-        return "(\"${name}\"${if (ext != null) ", ext" else ""}${if (flavorConfig != null) ", extension" else ""})"
+        return "(\"${name}\"${if (flavorConfig.orNull != null) ", extension" else ""})"
     }
 }

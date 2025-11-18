@@ -1,5 +1,6 @@
 package com.valpha.vulcan
 
+import com.android.build.api.dsl.ApplicationProductFlavor
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.variant.AndroidComponentsExtension
 import com.android.build.gradle.BasePlugin
@@ -58,6 +59,9 @@ private fun Project.configVariantDimensionConfigurations(
                 vulcanConfig.variants.forEach { variant ->
                     create(variant.name) {
                         this.dimension = VULCAN_VARIANT_DIMENSION
+                        if (this@configVariantDimensionConfigurations == variant.targetModule.get() && this is ApplicationProductFlavor) {
+                            variant.flavorConfig.orNull?.execute(this)
+                        }
                     }
                 }
             }
