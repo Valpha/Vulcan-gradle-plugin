@@ -1,10 +1,8 @@
-package com.valpha.vulcan.model
+package io.github.valpha.model
 
-import com.valpha.vulcan.utility.taggedError
-import org.gradle.api.NamedDomainObjectContainer
+import io.github.valpha.utility.taggedError
 import org.gradle.api.Project
 import org.gradle.api.model.ObjectFactory
-import org.gradle.kotlin.dsl.container
 import org.gradle.kotlin.dsl.domainObjectContainer
 import org.gradle.kotlin.dsl.newInstance
 import javax.inject.Inject

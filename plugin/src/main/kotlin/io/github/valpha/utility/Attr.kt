@@ -1,4 +1,4 @@
-package com.valpha.vulcan.utility
+package io.github.valpha.utility
 
 import org.gradle.api.attributes.Attribute
 

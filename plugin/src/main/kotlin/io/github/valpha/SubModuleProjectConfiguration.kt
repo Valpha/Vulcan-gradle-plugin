@@ -1,19 +1,16 @@
-package com.valpha.vulcan
+package io.github.valpha
 
 import com.android.build.api.dsl.ApplicationProductFlavor
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.variant.AndroidComponentsExtension
 import com.android.build.gradle.BasePlugin
-import com.valpha.vulcan.model.VariantConfig
-import com.valpha.vulcan.model.VulcanConfigExtension
-import com.valpha.vulcan.utility.VULCAN_VARIANT_DIMENSION
-import com.valpha.vulcan.utility.VulcanAttr
-import com.valpha.vulcan.utility.log
+import io.github.valpha.model.VulcanConfigExtension
+import io.github.valpha.utility.VULCAN_VARIANT_DIMENSION
+import io.github.valpha.utility.VulcanAttr
+import io.github.valpha.utility.log
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.withType
-import kotlin.collections.component1
-import kotlin.collections.component2
 import kotlin.collections.contains
 import kotlin.collections.forEach
 

@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library") version "8.12.3" apply false
     id("com.android.application") version "8.12.3" apply false
-    id("com.valpha.vulcan") version "0.1.0"
+    id("io.github.valpha.vulcan") version "1.0"
 }
 
 

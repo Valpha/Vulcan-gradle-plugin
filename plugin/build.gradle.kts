@@ -10,13 +10,12 @@ import org.gradle.kotlin.dsl.invoke
 
 plugins {
     // Apply the Java Gradle plugin development plugin to add support for developing Gradle plugins
-    `java-gradle-plugin`
+//    `java-gradle-plugin`
     `kotlin-dsl`
-    `embedded-kotlin`
     id("com.gradle.plugin-publish") version "2.0.0"
 
     // Apply the Kotlin JVM plugin to add support for Kotlin.
-    alias(libs.plugins.kotlin.jvm)
+//    alias(libs.plugins.kotlin.jvm)
 }
 
 repositories {
@@ -33,46 +32,23 @@ testing {
             useKotlinTest("2.0.0")
         }
 
-        // Create a new test suite
-        /*val functionalTest by registering(JvmTestSuite::class) {
-            // Use Kotlin Test test framework
-            useKotlinTest("2.0.0")
-
-            dependencies {
-                // functionalTest test suite depends on the production code in tests
-                implementation(project())
-
-            }
-
-            targets {
-                all {
-                    // This test suite should run after the built-in test suite has run its tests
-                    testTask.configure { shouldRunAfter(test) }
-                }
-            }
-        }*/
     }
 }
 
-group = "com.valpha.vulcan"
-version = "0.1.0"
+group = "io.github.valpha"
+version = "1.0"
 
 gradlePlugin {
-    // Define the plugin
+    vcsUrl.set("https://github.com/Valpha/Vulcan-gradle-plugin")
+    website.set("https://github.com/Valpha/Vulcan-gradle-plugin")
     val vulcan by plugins.creating {
-        id = "com.valpha.vulcan"
-        implementationClass = "com.valpha.VulcanPlugin"
-
-
+        id = "io.github.valpha.vulcan"
+        implementationClass = "io.github.valpha.VulcanPlugin"
+        displayName = "Vulcan Gradle Plugin"
+        description = "A Gradle plugin for Android project modularization and flavor management."
+        tags = listOf("Android", "Vulcan", "modularization", "flavor", "clean architecture")
     }
 }
-
-//gradlePlugin.testSourceSets.add(sourceSets["functionalTest"])
-
-//tasks.named<Task>("check") {
-//    // Include functionalTest as part of the check lifecycle
-//    dependsOn(testing.suites.named("functionalTest"))
-//}
 
 publishing.repositories.maven {
     name = "local-test"

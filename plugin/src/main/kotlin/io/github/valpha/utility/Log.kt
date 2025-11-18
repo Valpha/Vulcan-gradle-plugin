@@ -1,4 +1,4 @@
-package com.valpha.vulcan.utility
+package io.github.valpha.utility
 
 internal const val KIT_NAME = "Vulcan-Plugin"
 

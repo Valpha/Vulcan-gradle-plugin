@@ -1,10 +1,8 @@
-package com.valpha.vulcan.model
+package io.github.valpha.model
 
 import com.android.build.api.dsl.ApplicationProductFlavor
-import com.android.build.api.dsl.LibraryProductFlavor
-import com.valpha.vulcan.utility.taggedError
+import io.github.valpha.utility.taggedError
 import org.gradle.api.Action
-import org.gradle.api.GradleException
 import org.gradle.api.Named
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.model.ObjectFactory
