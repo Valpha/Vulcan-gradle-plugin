@@ -11,4 +11,5 @@ android{
 dependencies {
     implementation(project(":feature1"))
     implementation(project(":feature2"))
+//    implementation(project(":core"))
 }

@@ -2,10 +2,6 @@ package com.valpha.vulcan.utility
 
 internal const val KIT_NAME = "Vulcan-Plugin"
 
-internal fun <T> T.warn(tag: String? = null) =
-    println("[$KIT_NAME](WARNING):  ${tag?.let { "($it) " } ?: ""}$this")
-
-
 internal inline fun taggedLog(tag: String? = null, crossinline lazyMessage: () -> String): () -> String {
     return { "[$KIT_NAME]: ${tag?.let { "($it) " } ?: ""}${lazyMessage()}" }
 }
@@ -31,7 +27,7 @@ internal fun String.logState() {
 }
 
 
-fun main() {
+private fun main() {
     "This is a log message".log("TestTag")
 //    require("This is a require message", "TestTag")
 }

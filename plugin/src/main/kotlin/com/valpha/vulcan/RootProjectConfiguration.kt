@@ -9,12 +9,14 @@ import com.valpha.vulcan.model.VariantConfig
 import org.gradle.kotlin.dsl.create
 import com.valpha.vulcan.model.VulcanConfigExtension
 import com.valpha.vulcan.model.findProjectByName
+import com.valpha.vulcan.utility.VULCAN_VARIANT_DIMENSION
 import com.valpha.vulcan.utility.log
 import com.valpha.vulcan.utility.logState
 import com.valpha.vulcan.utility.require
 import com.valpha.vulcan.utility.taggedRequire
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.add
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.findByType
 
@@ -35,51 +37,7 @@ internal fun Project.configureRootProjectVulcan() {
         checkVariantsConfig(config)
 
         configFlavorAndDimensionModule(config.flavorDimensions)
-
-        configVariantsConfig(config.variants)
     }
-}
-
-private const val VULCAN_VARIANT_DIMENSION = "vulcan_variant_dimension"
-
-private fun Project.configVariantsConfig(variants: NamedDomainObjectContainer<VariantConfig>) {
-    val tag = "configVariantsConfig"
-
-    variants.forEach { variant ->
-        val variantTag = tag + ":" + variant.name
-
-        variant.targetModule.get().afterEvaluate {
-            val androidComponent = extensions.findByType(ApplicationAndroidComponentsExtension::class)
-            requireNotNull(
-                androidComponent,
-                taggedRequire { "Cannot find AndroidComponentsExtension, please make sure Vulcan is applied to an Android module." })
-
-            androidComponent.finalizeDsl { extension ->
-                "create app variants[${variant.name}] for module[$name]".log(variantTag)
-
-                with(extension) {
-                    if (this.flavorDimensions.contains(VULCAN_VARIANT_DIMENSION).not()) {
-                        this.flavorDimensions += VULCAN_VARIANT_DIMENSION
-                    }
-                    productFlavors {
-                        create(variant.name) {
-                            this.dimension = VULCAN_VARIANT_DIMENSION
-                            variant.flavorMenu.get().forEach { (flavorDimension, flavor) ->
-                                missingDimensionStrategy(flavorDimension, flavor)
-                                "select(${flavorDimension}-->$flavor)".log(variantTag)
-                            }
-                        }
-
-                    }
-                }
-
-            }
-
-        }
-
-    }
-
-
 }
 
 private fun Project.configFlavorAndDimensionModule(flavorDimensions: NamedDomainObjectContainer<FlavorDimensionConfig>) {
@@ -110,12 +68,14 @@ private fun Project.configFlavorAndDimensionModule(flavorDimensions: NamedDomain
                             dependencies {
                                 add("${it.name}Implementation", it.targetModule)
                             }
+
                         }
                     }
 
                 }
 
             }
+
 
         }
 

@@ -55,3 +55,26 @@ vulcan {
         }
     }
 }
+
+allprojects {
+
+    tasks.register("printConfigurationHierarchy") {
+        doLast {
+            fun printConfig(name: String, indent: String = "") {
+                val config = project.configurations.findByName(name) ?: return
+                println("$indent$name")
+                println(config.attributes.toString())
+                config.extendsFrom.forEach { parent ->
+                    printConfig(parent.name, "$indent  └── ")
+                }
+            }
+
+            project.configurations.forEach { config ->
+                println("==== ${config.name} ====")
+                printConfig(config.name, "")
+                println()
+            }
+        }
+    }
+
+}
