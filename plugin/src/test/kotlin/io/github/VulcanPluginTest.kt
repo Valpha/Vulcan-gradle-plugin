@@ -8,13 +8,13 @@ import kotlin.test.Test
 import kotlin.test.assertNotNull
 
 /**
- * A simple unit test for the 'com.valpha.greeting' plugin.
+ * A simple unit test for the 'io.github.valpha.greeting' plugin.
  */
 class VulcanPluginTest {
     @Test fun `plugin registers task`() {
         // Create a test project and apply the plugin
         val project = ProjectBuilder.builder().build()
-        project.plugins.apply("com.valpha.vulcan")
+        project.plugins.apply("io.github.valpha.vulcan")
 
         // Verify the result
         assertNotNull(project.tasks.findByName("greeting"))

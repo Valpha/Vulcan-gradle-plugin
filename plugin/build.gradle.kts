@@ -9,13 +9,8 @@ import org.gradle.kotlin.dsl.invoke
  */
 
 plugins {
-    // Apply the Java Gradle plugin development plugin to add support for developing Gradle plugins
-//    `java-gradle-plugin`
     `kotlin-dsl`
     id("com.gradle.plugin-publish") version "2.0.0"
-
-    // Apply the Kotlin JVM plugin to add support for Kotlin.
-//    alias(libs.plugins.kotlin.jvm)
 }
 
 repositories {
@@ -35,8 +30,9 @@ testing {
     }
 }
 
-group = "io.github.valpha"
+group = "io.github.valpha.vulcan"
 version = "1.0"
+base.archivesName = "vulcan-plugin"
 
 gradlePlugin {
     vcsUrl.set("https://github.com/Valpha/Vulcan-gradle-plugin")
@@ -50,11 +46,31 @@ gradlePlugin {
     }
 }
 
-publishing.repositories.maven {
-    name = "local-test"
-    url = uri("$projectDir/.repo")
+publishing {
+    publications {
+        withType<MavenPublication> {
+            this.artifactId = base.archivesName.get()
+        }
+    }
+    repositories {
+        maven {
+            name = "local-test"
+            url = uri("$projectDir/.repo")
+        }
+        maven {
+            name = "bestune"
+            url = uri("http://10.170.8.35:8077/api/v4/projects/311/packages/maven")
+            credentials(HttpHeaderCredentials::class) {
+                name = "Private-Token"
+                value = findProperty("vulcanPublishToken") as String?
+                isAllowInsecureProtocol = true
+            }
+            authentication {
+                create("header", HttpHeaderAuthentication::class)
+            }
+        }
+    }
 }
-
 dependencies {
     compileOnly("com.android.tools.build:gradle-api:8.13.0")
     implementation(gradleKotlinDsl())
