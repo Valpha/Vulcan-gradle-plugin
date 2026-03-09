@@ -11,6 +11,7 @@ import io.github.valpha.utility.require
 import io.github.valpha.utility.taggedRequire
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
+import org.gradle.api.logging.LogLevel
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.findByType
 
@@ -22,6 +23,7 @@ internal fun Project.configureRootProjectVulcan() {
         val tag = "vulcanConfig"
         "vulcan.config.flavorDimensions: ${config.flavorDimensions.map { it.name }}".log(tag)
         "vulcan.config.variants: ${config.variants.map { it.name }}".log(tag)
+        "vulcan.config.features: ${config.features.map { it.name }}".log(tag)
         "vulcan.config.modules: ${config.modules.map { it.name }}".log(tag)
 
         // resolve flavor module mapping

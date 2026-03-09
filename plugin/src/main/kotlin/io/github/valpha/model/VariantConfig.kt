@@ -8,6 +8,7 @@ import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
 import javax.inject.Inject
@@ -29,6 +30,15 @@ abstract class VariantConfig @Inject constructor(
         scope.action()
     }
 
+    @get:Input
+    abstract val featuresMenu: SetProperty<Feature>
+
+    fun featuresMenu(action: FeatureMenuScope.() -> Unit) {
+        val scope = objectFactory.newInstance(
+            FeatureMenuScope::class.java, this, extension.features
+        )
+        scope.action()
+    }
     @get:Input
     @get:Optional
     abstract val flavorConfig: Property<Action<ApplicationProductFlavor>?>
@@ -53,5 +63,18 @@ abstract class FlavorMenuScope @Inject constructor(
             ?: error(taggedError("Flavor '$flavorName' not found in dimension '$dimensionName'."))
 
         variant.flavorMenu.put(dimensionName, flavorName)
+    }
+}
+abstract class FeatureMenuScope @Inject constructor(
+    private val variant: VariantConfig,
+    private val features: NamedDomainObjectContainer<Feature>
+) {
+
+    fun select(featureName: String) {
+
+        val feature = features.findByName(featureName)
+            ?: error(taggedError("Feature '$featureName' not found"))
+
+        variant.featuresMenu.add(feature)
     }
 }

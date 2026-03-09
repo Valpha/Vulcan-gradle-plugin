@@ -15,6 +15,7 @@ open class VulcanConfigExtension @Inject constructor(objectFactory: ObjectFactor
             .apply { extension = this@VulcanConfigExtension }
     }
 
+    val features = objectFactory.domainObjectContainer(Feature::class)
 }
 
 fun VulcanConfigExtension.findProjectByName(name: String): Project {

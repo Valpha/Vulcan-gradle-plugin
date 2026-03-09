@@ -3,16 +3,17 @@ package io.github.valpha
 import com.android.build.api.dsl.ApplicationProductFlavor
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.variant.AndroidComponentsExtension
+import com.android.build.gradle.AppPlugin
 import com.android.build.gradle.BasePlugin
 import io.github.valpha.model.VulcanConfigExtension
 import io.github.valpha.utility.VULCAN_VARIANT_DIMENSION
 import io.github.valpha.utility.VulcanAttr
 import io.github.valpha.utility.log
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
+import org.gradle.kotlin.dsl.hasPlugin
 import org.gradle.kotlin.dsl.withType
-import kotlin.collections.contains
-import kotlin.collections.forEach
 
 internal fun Project.configureSubModuleProjectVulcan() {
     this.displayName.log("setup")
@@ -58,6 +59,16 @@ private fun Project.configVariantDimensionConfigurations(
                         this.dimension = VULCAN_VARIANT_DIMENSION
                         if (this@configVariantDimensionConfigurations == variant.targetModule.get() && this is ApplicationProductFlavor) {
                             variant.flavorConfig.orNull?.execute(this)
+                        }
+
+                        if (variant.targetModule.get() == this@configVariantDimensionConfigurations) {
+                            dependencies {
+                                variant.featuresMenu.get().forEach { selectFeature ->
+                                    add("${variant.name}Implementation", selectFeature.targetModule.get())
+                                    "feature[${selectFeature.name}] added to module[${name}] at variant[${variant.name}]".log("configVariants")
+
+                                }
+                            }
                         }
                     }
                 }
@@ -151,5 +162,6 @@ private fun Project.disableUnusedVariants(
 
 }
 
-private fun Project.getRootVulcanConfig() = rootProject.extensions.getByType<VulcanConfigExtension>()
+private fun Project.getRootVulcanConfig() =
+    rootProject.extensions.getByType<VulcanConfigExtension>()
 

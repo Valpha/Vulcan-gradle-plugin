@@ -1,5 +1,8 @@
 package io.github.valpha.utility
 
+import org.gradle.api.logging.LogLevel
+import org.gradle.api.logging.Logging
+
 internal const val KIT_NAME = "Vulcan-Plugin"
 
 internal inline fun taggedLog(tag: String? = null, crossinline lazyMessage: () -> String): () -> String {
@@ -17,7 +20,7 @@ internal fun Boolean.require(lazyMessage: () -> String) {
 }
 
 internal fun <T> T.log(tag: String? = null) =
-    println(taggedLog(tag, ::toString)())
+    Logging.getLogger(KIT_NAME).lifecycle(taggedLog(tag, ::toString)())
 
 internal fun String.logState() {
     "=".repeat(50).log()
